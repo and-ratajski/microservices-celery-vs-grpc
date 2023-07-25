@@ -1,0 +1,27 @@
+version: "3.5"
+
+networks:
+  celery-vs-grpc-local:
+    external: true
+
+services:
+
+  bom-generator-worker:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    # platform: linux/amd64
+    image: and-ratajski/celery-vs-grpc-worker-a:latest
+    container_name: celery-vs-grpc-worker-a
+    restart: always
+    env_file:
+      - .env.local
+    volumes:
+     - ./app:/app
+    networks:
+      - celery-vs-grpc-local
+    command: >
+       --exclude-queues=${CELERY_FOLLOWUP_QUEUE}
+       --hostname=bom-generator-worker@%h
+       --concurrency=1
+       --loglevel=INFO

@@ -1,0 +1,58 @@
+version: "3.5"
+
+networks:
+  celery-vs-grpc-local:
+    external: true
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.9-management-alpine
+    container_name:  celery-vs-grpc-rabbit-mq
+    restart: always
+    env_file:
+      - .env.local
+    networks:
+      - celery-vs-grpc-local
+    # ports:
+    #   - "5672:5672"
+
+  redis-backend:
+    restart: always
+    image: redis:7.0-alpine
+    container_name:  celery-vs-grpc-redis-backend
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory 156mb
+      --maxmemory-policy volatile-lfu
+    networks:
+      - celery-vs-grpc-local
+    # ports:
+    #   - "6379:6379"
+    env_file:
+      - .env.local
+
+  flower:
+    build:
+      context: ./.docker
+      dockerfile: Dockerfile
+    image: and-ratajski/celery-vs-grpc-flower:latest
+    container_name:  celery-vs-grpc-flower
+    # platform: linux/amd64
+    restart: always
+    env_file:
+      - .env.local
+    environment:
+      - CELERY_BROKER_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
+    networks:
+      - celery-vs-grpc-local
+    depends_on:
+      - rabbitmq
+      - redis-backend
+    command: |
+      celery
+      --result-backend redis://:${REDIS_PASSWORD}@redis-backend:6379
+      flower
+      --url_prefix=/flower
+      --broker_api=http://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:15672/api/
+      --conf=celeryconfig.py

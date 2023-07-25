@@ -1,0 +1,61 @@
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Python ###
+wheels/
+share/python-wheels/
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+# server
+server/static/*
+server/media/*
+!server/media/index.html
+server/app_start.sh
+
+dumps/fixtures/*
+!dumps/fixtures/.gitkeep
+dumps/diagrams/*
+!dumps/diagrams/.gitkeep
+
+# [temporary not push migrations to repo]
+server/apps/**/**/migrations/*
+!server/apps/**/**/migrations/__init__.py
+
+# Just trash folder for python tests
+.dirty
+
+### Environments ###
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Preserve example .env files from .envs
+!.envs/*/*.env
+
+### Unit test ###
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
