@@ -22,6 +22,6 @@ services:
       - celery-vs-grpc-local
     command: >
        --exclude-queues=${CELERY_FOLLOWUP_QUEUE}
-       --hostname=worker-a@%h
+       --hostname=bom-generator-worker@%h
        --concurrency=1
        --loglevel=INFO
