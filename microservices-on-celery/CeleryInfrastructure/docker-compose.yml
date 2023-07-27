@@ -13,8 +13,8 @@ services:
       - .env.local
     networks:
       - celery-vs-grpc-local
-    # ports:
-    #   - "5672:5672"
+    ports:
+      - "8081:5672"
 
   redis-backend:
     restart: always
@@ -27,8 +27,6 @@ services:
       --maxmemory-policy volatile-lfu
     networks:
       - celery-vs-grpc-local
-    # ports:
-    #   - "6379:6379"
     env_file:
       - .env.local
 
@@ -46,6 +44,8 @@ services:
       - CELERY_BROKER_URL=amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
     networks:
       - celery-vs-grpc-local
+    ports:
+      - "8080:${FLOWER_PORT}"
     depends_on:
       - rabbitmq
       - redis-backend

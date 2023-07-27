@@ -1,10 +1,13 @@
 import datetime
 
-from celery_config import app, MAIN_QUEUE, MAIN_TASK, FOLLOWUP_TASK
+from sqlalchemy.orm import Session
+
+from celery_config import app, engine, MAIN_QUEUE, MAIN_TASK, DB_TABLE
+from sqlalchemy import text
 
 
 @app.task(bind=True, name=MAIN_TASK, queue=MAIN_QUEUE)
-def task_a(self, string: str, **kwargs):
+def task_a(self, string: str, **kwargs) -> dict:
     """
     WorkerA's main task - parses dummy string to make it even dummier.
     """
@@ -12,13 +15,9 @@ def task_a(self, string: str, **kwargs):
         "worker": self.request.hostname,
         "acknowledgeTime": datetime.datetime.now()
     }
-    parsed_string = string
+    stmt = text(f"INSERT INTO {DB_TABLE} (x, y) VALUES (:x, :y)")
+    with engine.begin() as conn:
+        conn.execute(stmt, [{"x": 11, "y": 12}, {"x": 13, "y": 14}])
+        conn.commit()
 
-    follow_up_task = app.send_task(
-        FOLLOWUP_TASK,
-        args=[parsed_string],
-        kwargs=kwargs,
-        route_name=FOLLOWUP_TASK,
-    )
-    result["followUpTask"] = str(follow_up_task)
     return result

@@ -1,7 +1,10 @@
 import os
-from celery import Celery
 import sys
+
+from celery import Celery
+from celery.signals import worker_init
 from kombu import Exchange, Queue
+from sqlalchemy import create_engine, text, MetaData, Table, Column, Integer, String, UUID, TIMESTAMP
 
 
 def get_backend() -> str:
@@ -59,3 +62,35 @@ app.conf.task_routes = {
     MAIN_TASK: {"queue": MAIN_QUEUE},
     FOLLOWUP_TASK: {"queue": FOLLOWUP_QUEUE},
 }
+
+DB_USERNAME = os.environ.get("DB_USERNAME")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_HOST = os.environ.get("DB_HOST")
+DB_PORT = os.environ.get("DB_PORT")
+DB_NAME = os.environ.get("DB_NAME")
+DB_TABLE = os.environ.get("DB_TABLE")
+engine = create_engine(f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
+
+
+@worker_init.connect
+def init_db(sender=None, **kwargs) -> None:
+    print(f"[INIT-INFO] Tasks Broker: {BROKER}")
+    print(f"[INIT-INFO] Result Backend: {BACKEND}")
+
+    metadata_obj = MetaData()
+    celery_table = Table(
+        DB_TABLE,
+        metadata_obj,
+        Column("id", UUID, primary_key=True),
+        Column("test_string", String(8192), nullable=False),
+        Column("worker", String(64), nullable=False),
+        Column("added", TIMESTAMP, nullable=False)
+    )
+
+    metadata_obj.create_all(engine)
+
+    with engine.begin() as conn:
+        conn.execute(text(f"CREATE TABLE {DB_TABLE} (x int, y int)"))
+    # with engine.connect() as conn:
+    #     conn.execute(text(f"CREATE TABLE {DB_TABLE} (x int, y int)"))
+    #     conn.commit()

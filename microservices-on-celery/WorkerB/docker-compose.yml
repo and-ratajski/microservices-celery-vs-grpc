@@ -6,7 +6,7 @@ networks:
 
 services:
 
-  worker-a:
+  worker-b:
     build:
       context: .
       dockerfile: .docker/Dockerfile
@@ -22,6 +22,6 @@ services:
       - celery-vs-grpc-local
     command: >
        --exclude-queues=${CELERY_FOLLOWUP_QUEUE}
-       --hostname=bom-generator-worker@%h
+       --hostname=worker-b@%h
        --concurrency=1
        --loglevel=INFO
