@@ -11,8 +11,8 @@ services:
       context: .
       dockerfile: .docker/Dockerfile
     # platform: linux/amd64
-    image: and-ratajski/celery-vs-grpc-worker-a:latest
-    container_name: celery-vs-grpc-worker-a
+    image: and-ratajski/celery-vs-grpc-worker-d:latest
+    container_name: celery-vs-grpc-worker-d
     restart: always
     env_file:
       - .env.local
