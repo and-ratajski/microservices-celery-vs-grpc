@@ -15,13 +15,15 @@ services:
     container_name: celery-vs-grpc-worker-d
     restart: always
     env_file:
-      - .env.local
+      - ../../db.env.local  # DB setup
+      - ../celery.env.local
+      - ./.env.local
     volumes:
      - ./app:/app
     networks:
       - celery-vs-grpc-local
     command: >
-       --exclude-queues=${CELERY_FOLLOWUP_QUEUE}
        --hostname=worker-d@%h
+       --pool=solo
        --concurrency=1
        --loglevel=INFO

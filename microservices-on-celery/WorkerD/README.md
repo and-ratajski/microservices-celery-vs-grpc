@@ -55,19 +55,19 @@ See main [README.md](../README.md)
 ### Prepare local environment
 
 ```shell
-docker-compose --env-file=.env.local build 
+docker-compose --env-file=db.env.local build 
 ```
 
 ### Run local environment
 
 ```shell
-docker-compose --env-file=.env.local up -d
+docker-compose --env-file=db.env.local up -d
 ```
 
 ### Shut down and clean local environment
 
 ```shell
-docker-compose --env-file=.env.local down
+docker-compose --env-file=db.env.local down
 ```
 
 </details>
