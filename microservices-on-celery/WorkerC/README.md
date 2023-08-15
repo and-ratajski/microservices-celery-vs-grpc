@@ -1,6 +1,6 @@
-# Worker A
+# Worker C
 
-Celery Worker A in microservices-based celery architecture.
+Celery Worker C in microservices-based celery architecture.
 
 # Project usage
 
@@ -9,13 +9,13 @@ Worker can be invoked (asynchronously) in two ways:
 1. direct celery invocation:
 
 ```shell
-celery call tasks.task_a --args='["arg_1", "arg_2", ...]' --kwargs='{"kwarg_1": kwarg_value, ...}'
+celery call tasks.task_c --args='["arg_1", "arg_2", ...]' --kwargs='{"kwarg_1": kwarg_value, ...}'
 ```
 
 2. via [Flower](../CeleryInfrastructure) REST API
 
 ```shell
-curl --location '<backend-url>/flower/api/task/send-task/tasks.task_a' \
+curl -X POST --location 'http://localhost:8080/api/task/send-task/tasks.task_c' \
 --header 'Content-Type: application/json' \
 --data '{
     "args": ["arg_1", "arg_2", ...],

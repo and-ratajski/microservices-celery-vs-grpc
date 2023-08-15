@@ -1,16 +1,16 @@
 # Please mind that if you won't specify queue for a task,
 # it will be placed on the default 'celery' queue
 task_routes = {
-    "tasks.worker_a": {
+    "tasks.task_a": {
         "queue": "worker-a-queue",
     },
-    "tasks.worker_b": {
+    "tasks.task_b": {
         "queue": "worker-b-queue",
     },
-    "tasks.worker_c": {
+    "tasks.task_c": {
         "queue": "worker-c-queue",
     },
-    "tasks.worker_d": {
+    "tasks.task_d": {
         "queue": "worker-d-queue",
     },
 }

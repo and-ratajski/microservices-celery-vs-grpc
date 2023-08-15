@@ -16,9 +16,8 @@ DB_TABLE = os.environ.get("DB_TABLE")
 
 engine = create_engine(
     f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
-    convert_unicode=True,
     pool_recycle=3600,
-    pool_size=10,
+    pool_size=2,
     echo=False,
 )
 db_session = scoped_session(
@@ -26,29 +25,24 @@ db_session = scoped_session(
 )
 
 
-class Base(DeclarativeBase):
-    pass
+# class Base(DeclarativeBase):
+#     pass
+#
+#
+# class TestString(Base):
+#     __tablename__ = DB_TABLE
+#
+#     # id = Column("id", UUID, primary_key=True),
+#     id: Mapped[UUID] = mapped_column(UUID, primary_key=True)
+#     test_string: Mapped[str] = mapped_column(String(8192), nullable=False)
+#     worker: Mapped[str] = mapped_column(String(64), nullable=False)
+#     created: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP, nullable=False)
+#     saved: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP, nullable=False)
+#
+# TestString.metadata.create_all(engine)
 
 
-class TestString(Base):
-    __tablename__ = DB_TABLE
 
-    # id = Column("id", UUID, primary_key=True),
-    id: Mapped[UUID] = mapped_column(UUID, primary_key=True)
-    test_string: Mapped[str] = mapped_column(String(8192), nullable=False)
-    worker: Mapped[str] = mapped_column(String(64), nullable=False)
-    requested: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP, nullable=False)
-    added: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP, nullable=False)
-
-    # def __repr__(self):
-    #     return "<User(name='%s', fullname='%s', password='%s')>" % (
-    #         self.name,
-    #         self.fullname,
-    #         self.password,
-    #     )
-
-
-TestString.metadata.create_all(engine)
 
 ###
 
@@ -64,3 +58,9 @@ TestString.metadata.create_all(engine)
 # )
 # metadata_obj.create_all(engine)
 
+
+
+metadata_obj = MetaData()
+celery_test_table = Table(DB_TABLE, metadata_obj, autoload_with=engine)
+
+print(celery_test_table.__dict__)

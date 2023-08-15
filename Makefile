@@ -24,26 +24,26 @@ ASSETS = $(shell echo "AssetsService")
 # Build development environment
 build-local-env:
 	cd $(INFRASTRUCTURE) && docker-compose build
-	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose build
-	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose build
-	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose build
-	cd $(CELERY)/$(CELERY_WORKER_C) && docker-compose build
-	cd $(CELERY)/$(CELERY_WORKER_D) && docker-compose build
+	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose --env-file ./.env.local build
+	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose --env-file ./.env.local build
+	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose --env-file ./.env.local build
+	cd $(CELERY)/$(CELERY_WORKER_C) && docker-compose --env-file ./.env.local build
+	cd $(CELERY)/$(CELERY_WORKER_D) && docker-compose --env-file ./.env.local build
 
 # Run local environment
 run-local-env:
 	cd $(INFRASTRUCTURE) && docker-compose up -d
-	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose up -d
-	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose up -d
-	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose up -d
-	cd $(CELERY)/$(CELERY_WORKER_C) && docker-compose up -d
-	cd $(CELERY)/$(CELERY_WORKER_D) && docker-compose up -d
+	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose --env-file ./.env.local up -d
+	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose --env-file ./.env.local up -d
+	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose --env-file ./.env.local up -d
+	cd $(CELERY)/$(CELERY_WORKER_C) && docker-compose --env-file ./.env.local up -d
+	cd $(CELERY)/$(CELERY_WORKER_D) && docker-compose --env-file ./.env.local up -d
 
 # Down local environment
 down-local-env:
 	cd $(INFRASTRUCTURE) && docker-compose down
-	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose down
-	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose down
-	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose down
-	cd $(CELERY)/$(CELERY_WORKER_C) && docker-compose down
-	cd $(CELERY)/$(CELERY_WORKER_D) && docker-compose down
+	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose --env-file ./.env.local down
+	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose --env-file ./.env.local down
+	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose --env-file ./.env.local down
+	cd $(CELERY)/$(CELERY_WORKER_C) && docker-compose --env-file ./.env.local down
+	cd $(CELERY)/$(CELERY_WORKER_D) && docker-compose --env-file ./.env.local down

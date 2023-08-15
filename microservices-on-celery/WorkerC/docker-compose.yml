@@ -8,8 +8,8 @@ services:
 
   worker-c:
     build:
-      context: .
-      dockerfile: .docker/Dockerfile
+      context: .docker
+      dockerfile: Dockerfile
     # platform: linux/amd64
     image: and-ratajski/celery-vs-grpc-worker-c:latest
     container_name: celery-vs-grpc-worker-c
@@ -23,7 +23,7 @@ services:
       - celery-vs-grpc-local
     command: >
        --exclude-queues=${CELERY_FOLLOWUP_QUEUE}
-       --hostname=bom-worker-c@%h
+       --hostname=worker-c@%h
        --pool=solo
        --concurrency=1
        --loglevel=INFO
