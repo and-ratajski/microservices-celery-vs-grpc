@@ -1,7 +1,7 @@
 version: "3.5"
 
 volumes:
-  postgres-data: {}
+  celery-vs-grpc-data: {}
 
 networks:
   celery-vs-grpc-local:
@@ -9,14 +9,17 @@ networks:
 
 services:
   postgres:
-    image: "postgres:15.2-alpine"
-    restart: on-failure
+    build:
+      context: .docker
+      dockerfile: Dockerfile
+    image: and-ratajski/celery-vs-grpc-postgres:latest
+    restart: always
     container_name: celery-vs-grpc-postgres
     volumes:
-      - "postgres-data:/var/lib/postgresql/data"
+      - "celery-vs-grpc-data:/var/lib/postgresql/data"
     networks:
       - celery-vs-grpc-local
-      # ports:
-      # - "54321:5432"  # Uncomment only during direct load into/from db
+    ports:
+      - "5432:5432"
     env_file:
       - ../db.env.local
