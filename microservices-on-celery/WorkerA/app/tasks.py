@@ -4,7 +4,7 @@ from celery_config import app, MAIN_QUEUE, MAIN_TASK, FOLLOWUP_TASK
 
 
 @app.task(bind=True, name=MAIN_TASK, queue=MAIN_QUEUE)
-def task_a(self, string: str, **kwargs) -> dict:
+def task_a(self, string: str, created: datetime.datetime, **kwargs) -> dict:
     """
     WorkerA's main task - parses dummy string to make it even dummier.
     """
@@ -12,11 +12,11 @@ def task_a(self, string: str, **kwargs) -> dict:
         "worker": self.request.hostname,
         "acknowledgeTime": datetime.datetime.now()
     }
-    parsed_string = string
+    parsed_string = string.swapcase()
 
     follow_up_task = app.send_task(
         FOLLOWUP_TASK,
-        args=[parsed_string],
+        args=[parsed_string, created],
         kwargs=kwargs,
         route_name=FOLLOWUP_TASK,
     )

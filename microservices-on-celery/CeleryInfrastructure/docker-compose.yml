@@ -14,7 +14,7 @@ services:
     networks:
       - celery-vs-grpc-local
     ports:
-      - "8081:15672"
+      - "8082:15672"
 
   redis-backend:
     restart: always
@@ -45,8 +45,7 @@ services:
     networks:
       - celery-vs-grpc-local
     ports:
-#      - "8080:${FLOWER_PORT}"
-      - "5555:5555"
+      - "8081:${FLOWER_PORT}"
     depends_on:
       - rabbitmq
       - redis-backend
