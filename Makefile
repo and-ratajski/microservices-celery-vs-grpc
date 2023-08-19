@@ -1,6 +1,6 @@
 MAKEFLAGS += --silent --keep-going
 
-INFRASTRUCTURE = $(shell echo "infrastructure-n-test-runner")
+DB = $(shell echo "database")
 CELERY = $(shell echo "microservices-on-celery")
 CELERY_FLOWER = $(shell echo "CeleryInfrastructure")
 CELERY_WORKER_A = $(shell echo "WorkerA")
@@ -23,7 +23,8 @@ ASSETS = $(shell echo "AssetsService")
 
 # Build development environment
 build-local-env:
-	cd $(INFRASTRUCTURE) && docker-compose build
+	cd $(DB) && docker-compose build
+
 	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose --env-file ./.env.local build
 	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose --env-file ./.env.local build
 	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose --env-file ./.env.local build
@@ -32,7 +33,8 @@ build-local-env:
 
 # Run local environment
 run-local-env:
-	cd $(INFRASTRUCTURE) && docker-compose up -d
+	cd $(DB) && docker-compose up -d
+
 	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose --env-file ./.env.local up -d
 	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose --env-file ./.env.local up -d
 	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose --env-file ./.env.local up -d
@@ -41,9 +43,10 @@ run-local-env:
 
 # Down local environment
 down-local-env:
-	cd $(INFRASTRUCTURE) && docker-compose down
-	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose --env-file ./.env.local down
 	cd $(CELERY)/$(CELERY_WORKER_A) && docker-compose --env-file ./.env.local down
 	cd $(CELERY)/$(CELERY_WORKER_B) && docker-compose --env-file ./.env.local down
 	cd $(CELERY)/$(CELERY_WORKER_C) && docker-compose --env-file ./.env.local down
 	cd $(CELERY)/$(CELERY_WORKER_D) && docker-compose --env-file ./.env.local down
+	cd $(CELERY)/$(CELERY_FLOWER) && docker-compose --env-file ./.env.local down
+
+    cd $(DB) && docker-compose down

@@ -8,8 +8,8 @@ services:
 
   worker-c:
     build:
-      context: .docker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: .docker/Dockerfile
     # platform: linux/amd64
     image: and-ratajski/celery-vs-grpc-worker-c:latest
     container_name: celery-vs-grpc-worker-c

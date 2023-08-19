@@ -6,24 +6,19 @@ networks:
 
 services:
 
-  worker-b:
+  service-a:
     build:
       context: .
       dockerfile: .docker/Dockerfile
     # platform: linux/amd64
-    image: and-ratajski/celery-vs-grpc-worker-b:latest
-    container_name: celery-vs-grpc-worker-b
+    image: and-ratajski/celery-vs-grpc-service-a:latest
+    container_name: celery-vs-grpc-service-a
     restart: always
     env_file:
-      - ../celery.env.local
       - ./.env.local
     volumes:
      - ./app:/app
     networks:
       - celery-vs-grpc-local
-    command: >
-       --exclude-queues=${CELERY_FOLLOWUP_QUEUE}
-       --hostname=worker-b@%h
-       --pool=solo
-       --concurrency=1
-       --loglevel=INFO
+    ports:
+      - "50051:50051"

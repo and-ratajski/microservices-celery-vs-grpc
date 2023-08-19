@@ -42,6 +42,10 @@ venv
 minio/.minio.sys
 .coverage.*
 
+# Env
+**.env
+**.local
+
 # Project files
 docker-compose*.yml
 Makefile

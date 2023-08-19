@@ -1,3 +1,9 @@
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
 # Ignore .git and .cache folders
 .git
 .cache
@@ -8,6 +14,7 @@
 .github
 .gitignore
 .gitlab-ci.yml
+.pre-commit-config.yaml
 .readthedocs.yml
 .travis.yml
 
@@ -29,3 +36,16 @@
 *.md
 !README*.md
 README-secret.md
+
+# Other
+venv
+minio/.minio.sys
+.coverage.*
+
+# Env
+**.env
+**.local
+
+# Project files
+docker-compose*.yml
+Makefile
