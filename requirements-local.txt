@@ -12,6 +12,7 @@ click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.2.0
 frozenlist==1.3.3
+grpc-interceptor==0.15.3
 grpcio==1.57.0
 grpcio-tools==1.57.0
 idna==3.4
@@ -19,6 +20,7 @@ isort==5.12.0
 kombu==5.2.4
 multidict==6.0.4
 mypy-extensions==1.0.0
+mypy-protobuf==3.5.0
 packaging==23.0
 pathspec==0.11.1
 platformdirs==3.2.0
@@ -31,6 +33,7 @@ redis==4.5.4
 six==1.16.0
 SQLAlchemy==2.0.19
 tomli==2.0.1
+types-protobuf==4.24.0.1
 typing_extensions==4.7.1
 vine==5.0.0
 wcwidth==0.2.6

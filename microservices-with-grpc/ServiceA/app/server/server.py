@@ -1,4 +1,4 @@
-from pb2 import service_a_pb2, service_a_pb2_grpc
+import service_a_pb2, service_a_pb2_grpc
 
 
 class ServiceAServicer(service_a_pb2_grpc.ServiceAServicer):

@@ -42,6 +42,11 @@ venv
 minio/.minio.sys
 .coverage.*
 
+# gRPC
+**_pb2.py
+**_pb2.pyi
+**_pb2_grpc.py
+
 # Env
 **.env
 **.local

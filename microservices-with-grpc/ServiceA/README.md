@@ -3,5 +3,5 @@
 Generate python code
 
 ```shell
-python -m grpc_tools.protoc -I./protos --python_out=./app/pb2 --pyi_out=./app/pb2 --grpc_python_out=./app/pb2 ./protos/service_a.proto
+python -m grpc_tools.protoc -I ../_protobufs --python_out=./app --grpc_python_out=./app --mypy_out=./app ../_protobufs/service_a.proto
 ```

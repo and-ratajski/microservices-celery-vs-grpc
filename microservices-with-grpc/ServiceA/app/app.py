@@ -2,8 +2,8 @@ import grpc
 import logging
 from concurrent import futures
 
-from pb2 import service_a_pb2_grpc
-from server import ServiceAServicer
+import service_a_pb2_grpc
+from server.server import ServiceAServicer
 
 logger = logging.getLogger("ServiceA")
 logger.setLevel(logging.DEBUG)
