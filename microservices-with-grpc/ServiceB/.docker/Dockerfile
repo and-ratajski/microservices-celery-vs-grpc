@@ -14,13 +14,13 @@ RUN python -m grpc_tools.protoc -I /protobufs \
     --python_out=. \
     --grpc_python_out=. \
     --mypy_out=. \
-    /protobufs/service_a.proto
+    /protobufs/service_b.proto
 
 # Generate pb2 for ServiceB (client)
 RUN python -m grpc_tools.protoc -I /protobufs \
     --python_out=. \
     --grpc_python_out=. \
     --mypy_out=. \
-    /protobufs/service_b.proto
+    /protobufs/service_c.proto
 
 ENTRYPOINT ["python", "/app/app.py"]
