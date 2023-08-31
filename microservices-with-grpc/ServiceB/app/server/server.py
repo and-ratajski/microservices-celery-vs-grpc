@@ -1,9 +1,10 @@
 import logging
 import os
-import grpc
 
+import grpc
 import service_b_pb2
 import service_b_pb2_grpc
+
 # import service_c_pb2
 # import service_c_pb2_grpc
 

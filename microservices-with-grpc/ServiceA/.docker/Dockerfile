@@ -9,18 +9,13 @@ COPY ServiceA/app .
 RUN mkdir /protobufs
 COPY _protobufs /protobufs
 
-# Generate pb2 for ServiceA (server)
+# Generate pb2 code
 RUN python -m grpc_tools.protoc -I /protobufs \
     --python_out=. \
     --grpc_python_out=. \
     --mypy_out=. \
-    /protobufs/service_a.proto
-
-# Generate pb2 for ServiceB (client)
-RUN python -m grpc_tools.protoc -I /protobufs \
-    --python_out=. \
-    --grpc_python_out=. \
-    --mypy_out=. \
+    /protobufs/test_string.proto \
+    /protobufs/service_a.proto \
     /protobufs/service_b.proto
 
 ENTRYPOINT ["python", "/app/app.py"]

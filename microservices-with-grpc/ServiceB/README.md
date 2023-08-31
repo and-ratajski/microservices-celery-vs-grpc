@@ -2,16 +2,8 @@
 
 ## Generate pb2 code (python)
 
-### Service A (server)
-
 ```shell
-python -m grpc_tools.protoc -I ../_protobufs --python_out=./app --grpc_python_out=./app --mypy_out=./app ../_protobufs/service_b.proto
-```
-
-### Service B (client)
-
-```shell
-python -m grpc_tools.protoc -I ../_protobufs --python_out=./app --grpc_python_out=./app --mypy_out=./app ../_protobufs/service_c.proto
+python -m grpc_tools.protoc -I ../_protobufs --python_out=./app --grpc_python_out=./app --mypy_out=./app  ../_protobufs/test_string.proto ../_protobufs/service_b.proto ../_protobufs/service_c.proto
 ```
 
 ## Run service
@@ -25,11 +17,11 @@ docker-compose up -d
 ```python
 import grpc
 
-from service_a_pb2_grpc import ServiceAStub
-from service_a_pb2 import TestString
+from service_b_pb2_grpc import ServiceBStub
+from test_string_pb2 import TestString
 
 channel = grpc.insecure_channel("localhost:50051")
-client = ServiceAStub(channel)
+client = ServiceBStub(channel)
 req = TestString(test_string="dummy")
 client.ParseAndPass(req)
 ```

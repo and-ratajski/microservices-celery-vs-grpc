@@ -20,5 +20,5 @@ services:
      - ./app:/app
     networks:
       - celery-vs-grpc-local
-#    ports:
-#      - "50051:50051"
+    # ports:
+    #   - "50051:50051"
