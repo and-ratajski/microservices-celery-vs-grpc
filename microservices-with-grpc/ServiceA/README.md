@@ -19,10 +19,12 @@ import grpc
 
 from service_a_pb2_grpc import ServiceAStub
 from test_string_pb2 import TestString
+from google.protobuf.timestamp_pb2 import Timestamp
 
 channel = grpc.insecure_channel("localhost:50051")
 client = ServiceAStub(channel)
 req = TestString(test_string="dummy")
+req.created.GetCurrentTime()
 client.ParseAndPass(req)
 ```
 

@@ -10,6 +10,7 @@ from server.server import ServiceBServicer
 app_name = os.getenv("APP_NAME")
 app_port = os.getenv("APP_PORT")
 log_level = os.getenv("LOG_LEVEL")
+conn_timeout = int(os.getenv("GRPC_CONNECTION_TIMEOUT"))
 
 logger = logging.getLogger(app_name)
 logger.setLevel(logging.getLevelName(log_level))

@@ -10,7 +10,7 @@ import service_b_pb2_grpc
 
 app_name = os.getenv("APP_NAME")
 next_func_host = os.getenv("GRPC_FOLLOWUP_FUNC_HOST")
-next_func_port = os.getenv("APP_NAME")
+next_func_port = os.getenv("GRPC_FOLLOWUP_FUNC_PORT")
 
 logger = logging.getLogger(app_name)
 channel = grpc.insecure_channel(f"{next_func_host}:{next_func_port}")
@@ -21,10 +21,8 @@ class ServiceBServicer(service_b_pb2_grpc.ServiceBServicer):
     """Provides methods that implement functionality of ServiceA server."""
 
     def ParseAndPass(self, request, context):  # noqa
-        # context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        # context.set_details('Method not implemented!')
-        # raise NotImplementedError('Method not implemented!')
-        logger.debug(f"Called ParseAndPass of {app_name} for {request} and {context}")
+        logger.debug(f"Called ParseAndPass of {app_name} for {request}")
+        logger.debug(f"Timestamp2Datetime: {request.created.ToDatetime()}")
         # parsed_string = request.test_string.swapcase()
         #
         # req = service_b_pb2.TestString(test_string=parsed_string)

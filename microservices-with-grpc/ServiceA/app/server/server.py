@@ -9,7 +9,7 @@ from test_string_pb2 import TestString
 
 app_name = os.getenv("APP_NAME")
 next_func_host = os.getenv("GRPC_FOLLOWUP_FUNC_HOST")
-next_func_port = os.getenv("APP_NAME")
+next_func_port = os.getenv("GRPC_FOLLOWUP_FUNC_PORT")
 
 logger = logging.getLogger(app_name)
 channel = grpc.insecure_channel(f"{next_func_host}:{next_func_port}")
@@ -20,13 +20,10 @@ class ServiceAServicer(service_a_pb2_grpc.ServiceAServicer):
     """Provides methods that implement functionality of ServiceA server."""
 
     def ParseAndPass(self, request, context):  # noqa
-        # context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        # context.set_details('Method not implemented!')
-        # raise NotImplementedError('Method not implemented!')
-        logger.debug(f"Called ParseAndPass of {app_name} for {request} and {context}")
+        logger.debug(f"Called ParseAndPass of {app_name} for {request}")
         parsed_string = request.test_string.swapcase()
 
-        req = TestString(test_string=parsed_string)
+        req = TestString(test_string=parsed_string, created=request.created)
         res = client.ParseAndPass(req)
         logger.debug(f"Returned response from ServiceB {res}")
 
