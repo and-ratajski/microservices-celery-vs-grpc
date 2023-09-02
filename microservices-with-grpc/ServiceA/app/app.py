@@ -34,7 +34,7 @@ def serve() -> None:
 
 if __name__ == "__main__":
     if service_b_client.has_connection():
-        logger.info(f"Starting ServiceA (gRPC Server) on port {app_port}...")
+        logger.info(f"Starting {app_name} (gRPC Server) on port {app_port}...")
         serve()
     else:
         logger.critical("Couldn't connect to followup service, aborting...")

@@ -1,0 +1,24 @@
+version: "3.5"
+
+networks:
+  celery-vs-grpc-local:
+    external: true
+
+services:
+
+  service-c:
+    build:
+      context: ..
+      dockerfile: ServiceC/.docker/Dockerfile
+    # platform: linux/amd64
+    image: and-ratajski/celery-vs-grpc-service-c:latest
+    container_name: celery-vs-grpc-service-c
+    restart: always
+    env_file:
+      - ./.env.local
+    volumes:
+     - ./app:/app
+    networks:
+      - celery-vs-grpc-local
+    # ports:
+    #   - "50051:50051"

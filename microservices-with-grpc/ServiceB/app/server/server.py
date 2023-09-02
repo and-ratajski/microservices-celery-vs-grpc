@@ -1,31 +1,28 @@
 import logging
-import os
 
-import grpc
 import service_b_pb2
 import service_b_pb2_grpc
+from service_c_pb2_grpc import ServiceCStub
 
-# import service_c_pb2
-# import service_c_pb2_grpc
-
-app_name = os.getenv("APP_NAME")
-next_func_host = os.getenv("GRPC_FOLLOWUP_FUNC_HOST")
-next_func_port = os.getenv("GRPC_FOLLOWUP_FUNC_PORT")
-
-logger = logging.getLogger(app_name)
-channel = grpc.insecure_channel(f"{next_func_host}:{next_func_port}")
-client = service_b_pb2_grpc.ServiceBStub(channel)
+EmptyResponse = service_b_pb2.google_dot_protobuf_dot_empty__pb2.Empty
 
 
 class ServiceBServicer(service_b_pb2_grpc.ServiceBServicer):
     """Provides methods that implement functionality of ServiceA server."""
 
-    def ParseAndPass(self, request, context):  # noqa
-        logger.debug(f"Called ParseAndPass of {app_name} for {request}")
-        logger.debug(f"Timestamp2Datetime: {request.created.ToDatetime()}")
-        # parsed_string = request.test_string.swapcase()
-        #
-        # req = service_b_pb2.TestString(test_string=parsed_string)
-        # res = client.ParseAndPass(req)
+    def __init__(self, service_c_client: ServiceCStub, logger: logging.Logger) -> None:
+        super().__init__()
+        self.service_c_client = service_c_client
+        self.logger = logger
+        
+    def ParseAndPass(self, request, context) -> EmptyResponse:  # noqa
+        """ServiceB's main task - parses dummy string to make it even dummier."""
+        self.logger.debug(f"Called ParseAndPass of {self.__class__.__name__} for {request}")
+        parsed_string = request.test_string.swapcase()
 
-        return service_b_pb2.google_dot_protobuf_dot_empty__pb2.Empty()
+        request.test_string=parsed_string
+        req = request
+        res = self.service_c_client.invoke().ParseAndPass(req)
+
+        self.logger.debug(f"Returned response from ServiceC: {res}")
+        return EmptyResponse()

@@ -1,0 +1,10 @@
+python-dotenv==1.0.0
+pytz==2023.3
+# redis==4.5.4
+# SQLAlchemy==2.0.19
+# psycopg2==2.9.7
+grpcio==1.57.0
+grpcio-tools==1.57.0
+grpc-interceptor==0.15.3
+mypy-extensions==1.0.0
+mypy-protobuf==3.5.0

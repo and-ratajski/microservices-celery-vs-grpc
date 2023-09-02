@@ -3,10 +3,10 @@ import os
 from concurrent import futures
 
 import grpc
-import service_b_pb2_grpc
-from client.service_c_client import ServiceCClient
+import service_c_pb2_grpc
+from client.service_d_client import ServiceDClient
 from server.interceptors import ServerLoggingInterceptor
-from server.server import ServiceBServicer
+from server.server import ServiceCServicer
 
 app_name = os.getenv("APP_NAME")
 app_port = os.getenv("APP_PORT")
@@ -20,20 +20,20 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-service_c_client = ServiceCClient(logger)
-service_b_servicer = ServiceBServicer(service_c_client, logger)
+service_d_client = ServiceDClient(logger)
+service_c_servicer = ServiceCServicer(service_d_client, logger)
 
 def serve() -> None:
-    """Prepare and start ServiceB server."""
+    """Prepare and start ServiceC server."""
     interceptors = [ServerLoggingInterceptor(logger)]
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1), interceptors=interceptors)
-    service_b_pb2_grpc.add_ServiceBServicer_to_server(service_b_servicer, server)
+    service_c_pb2_grpc.add_ServiceCServicer_to_server(service_c_servicer, server)
     server.add_insecure_port(f"[::]:{app_port}")
     server.start()
     server.wait_for_termination()
 
 if __name__ == "__main__":
-    if service_c_client.has_connection():
+    if service_d_client.has_connection():
         logger.info(f"Starting {app_name} (gRPC Server) on port {app_port}...")
         serve()
     else:

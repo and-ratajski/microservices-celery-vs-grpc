@@ -2,10 +2,10 @@ FROM python:3.10-bullseye AS base
 RUN python -m pip install --upgrade pip
 WORKDIR /app
 
-COPY ServiceB/.docker/requirements.txt ./requirements.txt
+COPY ServiceD/.docker/requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 
-COPY ServiceB/app .
+COPY ServiceD/app .
 RUN mkdir /protobufs
 COPY _protobufs /protobufs
 
@@ -15,7 +15,6 @@ RUN python -m grpc_tools.protoc -I /protobufs \
     --grpc_python_out=. \
     --mypy_out=. \
     /protobufs/test_string.proto \
-    /protobufs/service_b.proto \
-    /protobufs/service_c.proto
+    /protobufs/service_d.proto 
 
 ENTRYPOINT ["python", "/app/app.py"]
