@@ -1,18 +1,21 @@
 import logging
-import os
 from typing import Any
 
 from grpc_interceptor import ServerInterceptor
 
 
-class CustomServerInterceptor(ServerInterceptor):
+class ServerLoggingInterceptor(ServerInterceptor):
+    """Basic logging interceptor class."""
 
-    def __init__(self, *args, **kwargs):
-        app_name = os.getenv("APP_NAME")
-        self.logger = logging.getLogger(app_name)
-        super().__init__(*args, **kwargs)
+    def __init__(self, logger: logging.Logger) -> None:
+        super().__init__()
+        self.logger = logger
+        
 
     def intercept(self, method, request, context, method_name):
+        """
+        Intercepts method invokation - used to add logging & tracing in a clean way.
+        """
         try:
             result = method(request, context)
         except Exception as e:
@@ -26,4 +29,4 @@ class CustomServerInterceptor(ServerInterceptor):
         self.logger.error(e)
 
     def log_success(self, result: Any) -> None:
-        self.logger.info(f"Successfully processed data, result: {str(result)}")
+        self.logger.debug(f"Successfully processed data, result: {str(result)}")
