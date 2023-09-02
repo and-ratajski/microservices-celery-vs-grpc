@@ -15,6 +15,7 @@ services:
     container_name: celery-vs-grpc-service-d
     restart: always
     env_file:
+      - ../../db.env.local  # DB setup
       - ./.env.local
     volumes:
      - ./app:/app
