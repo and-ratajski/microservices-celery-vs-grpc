@@ -1,0 +1,55 @@
+version: "3.5"
+
+networks:
+  celery-vs-grpc-local:
+    external: true
+
+services:
+  prometheus:
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
+    image: and-ratajski/celery-vs-grpc-prometheus:latest
+    container_name: celery-vs-grpc-prometheus
+    # platform: linux/amd64
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - celery-vs-grpc-local
+    ports:
+      - "9090:9090"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # - ./prometheus/config/:/etc/prometheus/
+      # - celery-vs-grpc-prometheus-vol:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.size=256MB'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      # - '--web.external-url=https://www.effiware.com/prometheus/'
+      - '--web.route-prefix=/'
+
+  grafana:
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+    image: and-ratajski/celery-vs-grpc-grafana:latest
+    container_name: celery-vs-grpc-grafana
+    # platform: linux/amd64
+    restart: always
+    depends_on:
+      - prometheus
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - celery-vs-grpc-local
+    ports:
+      - "9091:3000"
+    # volumes:
+      # - celery-vs-grpc-grafana-vol:/var/lib/grafana
+    env_file:
+      - ./grafana.env.local
+    user: "104"

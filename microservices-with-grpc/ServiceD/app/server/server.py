@@ -1,9 +1,9 @@
-import os
 import logging
+import os
 
 import service_d_pb2
-from .db_config import test_table, engine
 
+from .db_config import engine, test_table
 
 EmptyResponse = service_d_pb2.google_dot_protobuf_dot_empty__pb2.Empty
 

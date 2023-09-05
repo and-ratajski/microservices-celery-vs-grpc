@@ -8,7 +8,7 @@ CELERY_WORKER_B="WorkerB"
 CELERY_WORKER_C="WorkerC"
 CELERY_WORKER_D="WorkerD"
 GRPC="microservices-with-grpc"
-# GRPC_FLOWER="GRPCInfrastructure"
+GRPC_PROMETHEUS="GRPCInfrastructure"
 GRPC_SERVICE_A="ServiceA"
 GRPC_SERVICE_B="ServiceB"
 GRPC_SERVICE_C="ServiceC"
@@ -64,6 +64,7 @@ elif [ "$1" = "run" ] || [ "$1" = "--run" ]; then
 
     echo ""
     echo "[INFO] Starting gRPC services..."
+    docker-compose --file $GRPC/$GRPC_PROMETHEUS/docker-compose.yml --env-file $GRPC/$GRPC_PROMETHEUS/.env.local up --detach
     docker-compose --file $GRPC/$GRPC_SERVICE_A/docker-compose.yml --env-file $GRPC/$GRPC_SERVICE_A/.env.local up --detach
     docker-compose --file $GRPC/$GRPC_SERVICE_B/docker-compose.yml --env-file $GRPC/$GRPC_SERVICE_B/.env.local up --detach
     docker-compose --file $GRPC/$GRPC_SERVICE_C/docker-compose.yml --env-file $GRPC/$GRPC_SERVICE_C/.env.local up --detach
@@ -79,6 +80,7 @@ elif [ "$1" = "down" ] || [ "$1" = "--down" ]; then
 
     echo ""
     echo "[INFO] Destroying gRPC services..."
+    docker-compose --file $GRPC/$GRPC_PROMETHEUS/docker-compose.yml --env-file $GRPC/$GRPC_PROMETHEUS/.env.local down
     docker-compose --file $GRPC/$GRPC_SERVICE_A/docker-compose.yml --env-file $GRPC/$GRPC_SERVICE_A/.env.local down
     docker-compose --file $GRPC/$GRPC_SERVICE_B/docker-compose.yml --env-file $GRPC/$GRPC_SERVICE_B/.env.local down
     docker-compose --file $GRPC/$GRPC_SERVICE_C/docker-compose.yml --env-file $GRPC/$GRPC_SERVICE_C/.env.local down
